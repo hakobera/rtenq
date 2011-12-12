@@ -1,21 +1,19 @@
 $(function() {
-  var cg = new html5jp.graph.circle("results");
+  var cg = new html5jp.graph.circle("chart");
 
   var socket = io.connect();
   socket.on('update', function (data) {
-    console.log(data);
+    $('div', $('#chartContainer')).remove();
     cg.draw(data.items, { backgroundColor: '#ffffff' });
   });
 
   var processing = false;
   $('#submit').click(function(e) {
-    console.log('clicked');
     e.preventDefault();
     if (!processing) {
       processing = true;
       var value = $('input[name=selection]:checked').val();
       if (value) {
-        console.log(value);
         $.post('/submit', { selection: value  })
           .success(function() {
             console.log('ok');
